@@ -22,7 +22,7 @@ class ExpenseForm extends React.Component {
         }
 
         if(props.callAPI){
-            this.aCallAPI()
+            this.getInfoOfIndividualExpenseFromAPI()
        
         }
 
@@ -96,15 +96,19 @@ class ExpenseForm extends React.Component {
             }
         }
         else if(this.props.callAPI){
-            console.log("update expense")
+            this.editExpense()
+            setTimeout(()=>{
+                console.log(this.props.history)
+                // this.props.history.push("/dashboard")
+            },10)
         }
         
     }
 
-    aCallAPI=()=> {
+    getInfoOfIndividualExpenseFromAPI=()=> {
         console.log("calling api from expense form")
 
-        // const expenseID = this.props.match.url.substring(19, this.props.match.url.length);
+
         const expenseID = this.props.expenseID
         const email = this.props.email
         let url = "http://localhost:8080/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
@@ -134,6 +138,32 @@ class ExpenseForm extends React.Component {
             })
         })
 
+    }
+
+    editExpense = ()=>{
+
+        const expenseID = this.props.expenseID
+        const email = this.props.email
+
+        let url = "http://localhost:8080/updateExpense?email="+encodeURIComponent(email) + "&id="+encodeURIComponent(expenseID)+ "&description="+
+        encodeURIComponent(this.state.description)+"&amount="+encodeURIComponent(this.state.amount)+"&createdAt="+encodeURIComponent(this.state.createdAt)+"&note="
+        +encodeURIComponent(this.state.note)
+
+        let h = new Headers({
+            "Authorization": this.props.token
+        })
+        let req = new Request(url, {
+            method: "PATCH",
+            headers: h
+        })
+
+        fetch(req).then(async(response, error)=>{
+            if(error){
+                console.log("error")
+                return
+            }
+            return
+        })
     }
 
 
