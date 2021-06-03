@@ -117,13 +117,13 @@ app.post('/logout', auth, async (req, res) => {
 
 app.get('/singleExpense', auth, async(req,res)=>{
     const expenseId = req.query.id
-    console.log(req.query.id, "email")
+    
     const user = await User.findByEmail(req.query.email)
 
-    console.log('calling server')
+   
     user.expenses.forEach((eachExpense)=>{
         if(eachExpense.id === expenseId){
-            console.log("found something")
+           
             res.send({
                 description: eachExpense.description,
                 amount: eachExpense.amount,
@@ -136,13 +136,18 @@ app.get('/singleExpense', auth, async(req,res)=>{
 })
 
 app.patch('/updateExpense', auth, async(req,res)=>{
+
+ 
+
     const expenseId = req.query.id
     const user = await User.findByEmail(req.query.email)
-
+    console.log(req.query.description)
     user.expenses.forEach((eachExpense)=>{
         if(eachExpense.id === expenseId){
+            
             User.updateOne({
-                email: req.query.email
+                email: req.query.email,
+                id: eachExpense.id
             },
             {
                 $set:{
@@ -151,7 +156,10 @@ app.patch('/updateExpense', auth, async(req,res)=>{
                     "expenses.$.createdAt": req.query.createdAt,
                     "expenses.$.note": req.query.note
                 }
-            })
+            }), function(err){
+
+            }
+            res.send("edit success")
         }
     })
 })
