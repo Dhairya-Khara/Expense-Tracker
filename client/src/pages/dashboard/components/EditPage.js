@@ -1,33 +1,34 @@
 import React from 'react'
 import ExpensForm from './ExpenseForm'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import ExpenseForm from './ExpenseForm'
+import Header from './Header'
 
-class EditPage extends React.Component{
-     constructor(props){
+class EditPage extends React.Component {
+    constructor(props) {
         super(props)
-      
+
         this.state = {
-            description:"",
+            description: "",
             amount: 0,
             createdAt: 0,
-            note:"",
+            note: "",
         }
-        
-       
-  
-       
-    
+
+
+
+
+
     }
 
-   
-   
-     callAPI(){
-      
+
+
+    callAPI() {
+
         const expenseID = this.props.match.url.substring(19, this.props.match.url.length);
 
-        let url = "http://localhost:8080/singleExpense?email="+encodeURIComponent(this.props.email)+"&id="+encodeURIComponent(expenseID)
-      
+        let url = "http://localhost:8080/singleExpense?email=" + encodeURIComponent(this.props.email) + "&id=" + encodeURIComponent(expenseID)
+
         let h = new Headers({
             "Authorization": this.props.token
         })
@@ -35,15 +36,15 @@ class EditPage extends React.Component{
             method: "GET",
             headers: h
         })
-        fetch(req).then(async(response,error)=>{
-            if(error){
+        fetch(req).then(async (response, error) => {
+            if (error) {
                 console.log(error)
                 return
             }
             const parseResponse = await response.json()
-           
-            this.setState(()=>{
-                return({
+
+            this.setState(() => {
+                return ({
                     description: parseResponse.description,
                     amount: parseResponse.amount,
                     createdAt: parseResponse.createdAt,
@@ -54,22 +55,30 @@ class EditPage extends React.Component{
         })
     }
 
-    render(){
-       
+    render() {
+        if (this.props.auth) {
+            return (
+                <div>
+                    <Header />
+                    {/* <ExpensForm description = {this.state.description} amount = {this.state.amount} createdAt = {this.state.createdAt} note = {this.state.note}/> */}
+                    <ExpenseForm callAPI={true} expenseID={this.props.match.url.substring(19, this.props.match.url.length)} email={this.props.email} />
+                </div>
+            )
+        }
+        else{
+            this.props.history.push("/")
+            return(<div></div>)
+        }
         
-        return(
-            <div>
-                {/* <ExpensForm description = {this.state.description} amount = {this.state.amount} createdAt = {this.state.createdAt} note = {this.state.note}/> */}
-                <ExpenseForm callAPI = {true} expenseID = {this.props.match.url.substring(19, this.props.match.url.length)} email = {this.props.email}/>
-            </div>
-        )
+
+
     }
 
 }
 
-const mapStateToProps = (state)=>{
-   
-    return{
+const mapStateToProps = (state) => {
+
+    return {
         email: state.auth.email,
         token: state.auth.token,
         auth: state.auth.authenticated,

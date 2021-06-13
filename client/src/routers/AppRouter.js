@@ -16,10 +16,9 @@ class AppRouter extends React.Component {
         return (
             <BrowserRouter>
                 <div>
-                    <Header/>
+                    
                     <Switch>
                         <Route path="/" component={LandingPage} exact={true} />
-                        <Route path="/account-info" component={AccountInfo} />
                         <Route path = "/dashboard" component = {ExpenseDashboard} exact = {true}/>
                         <Route path = "/dashboard/create" component = {AddExpensePage}/>
                         <Route path = "/dashboard/help" component = {HelpPage}/>

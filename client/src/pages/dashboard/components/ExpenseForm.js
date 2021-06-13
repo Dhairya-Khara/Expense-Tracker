@@ -2,7 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import { SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import { withRouter} from 'react-router-dom';
 
 
 
@@ -11,9 +12,9 @@ class ExpenseForm extends React.Component {
 
     constructor(props) {
         super(props)
-        console.log(props)
+        this.redirectToDashboard = this.redirectToDashboard.bind(this);
         this.state = {
-            description:  "",
+            description: "",
             note: "",
             amount: "",
             createdAt: moment(),
@@ -21,12 +22,12 @@ class ExpenseForm extends React.Component {
             errorState: ""
         }
 
-        if(props.callAPI){
+        if (props.callAPI) {
             this.getInfoOfIndividualExpenseFromAPI()
-       
+
         }
 
-        console.log(this.state)
+
     }
 
     onDescriptionChange = (e) => {
@@ -72,7 +73,7 @@ class ExpenseForm extends React.Component {
     }
     onSubmit = (e) => {
         e.preventDefault();
-        if(!this.props.callAPI){
+        if (!this.props.callAPI) {
             if (!this.state.description || !this.state.amount) {
                 this.setState(() => {
                     return {
@@ -92,21 +93,24 @@ class ExpenseForm extends React.Component {
                     createdAt: this.state.createdAt.valueOf(),
                     note: this.state.note
                 })
-    
+
             }
         }
-        else if(this.props.callAPI){
+        else if (this.props.callAPI) {
             this.editExpense()
-            setTimeout(()=>{
-                console.log(this.props.history)
-                // this.props.history.push("/dashboard")
-            },10)
+            this.redirectToDashboard(this.props)
         }
-        
+
     }
 
-    getInfoOfIndividualExpenseFromAPI=()=> {
-        console.log("calling api from expense form")
+    redirectToDashboard = (props)=>{
+        setTimeout(() => {
+            props.history.push("/dashboard")
+        }, 10)
+    }
+
+    getInfoOfIndividualExpenseFromAPI = () => {
+        
 
 
         const expenseID = this.props.expenseID
@@ -126,28 +130,28 @@ class ExpenseForm extends React.Component {
                 return
             }
             const parseResponse = await response.json()
-            console.log(parseResponse)
-            this.setState(()=>{
-                return{
+            
+            this.setState(() => {
+                return {
                     description: parseResponse.description,
-                    amount: parseResponse.amount,
+                    amount: parseResponse.amount/1000,
                     createdAt: moment(parseResponse.createdAt),
                     note: parseResponse.note
-                   
+
                 }
             })
         })
 
     }
 
-    editExpense = ()=>{
+    editExpense = () => {
 
         const expenseID = this.props.expenseID
         const email = this.props.email
 
-        let url = "http://localhost:8080/updateExpense?email="+encodeURIComponent(email) + "&id="+encodeURIComponent(expenseID)+ "&description="+
-        encodeURIComponent(this.state.description)+"&amount="+encodeURIComponent(this.state.amount)+"&createdAt="+encodeURIComponent(this.state.createdAt)+"&note="
-        +encodeURIComponent(this.state.note)
+        let url = "http://localhost:8080/updateExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID) + "&description=" +
+            encodeURIComponent(this.state.description) + "&amount=" + encodeURIComponent(this.state.amount) + "&createdAt=" + encodeURIComponent(moment(this.state.createdAt).unix() * 1000) + "&note="
+            + encodeURIComponent(this.state.note)
 
         let h = new Headers({
             "Authorization": this.props.token
@@ -157,8 +161,8 @@ class ExpenseForm extends React.Component {
             headers: h
         })
 
-        fetch(req).then(async(response, error)=>{
-            if(error){
+        fetch(req).then(async (response, error) => {
+            if (error) {
                 console.log("error")
                 return
             }
@@ -166,9 +170,34 @@ class ExpenseForm extends React.Component {
         })
     }
 
+    removeExpense=()=>{
+        
+        const expenseID = this.props.expenseID
+        const email = this.props.email
+        
+        let url = "http://localhost:8080/deleteExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
+          
+
+        let h = new Headers({
+            "Authorization": this.props.token
+        })
+        let req = new Request(url, {
+            method: "POST",
+            headers: h
+        })
+
+        fetch(req).then(async (response, error) => {
+            if (error) {
+                console.log("error")
+                
+            }
+         
+        })
+        this.redirectToDashboard(this.props)
+    }
 
     render() {
-
+        
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
@@ -176,7 +205,8 @@ class ExpenseForm extends React.Component {
                     <input value={this.state.amount} placeholder="Amount" type="number" onChange={this.onAmountChange}></input>
                     <br></br>
                     <SingleDatePicker
-                        date={this.state.createdAt}
+                       
+                        date = {this.state.createdAt}
                         onDateChange={this.onDateChange}
                         focused={this.state.calendarFocused}
                         onFocusChange={this.onFocusChange}
@@ -187,22 +217,22 @@ class ExpenseForm extends React.Component {
                     />
                     <br></br>
                     <textarea value={this.state.note} placeholder="Add a note for your expense (optional)" onChange={this.onNoteChange}></textarea>
-                    <button>{this.props.callAPI?"Edit Expense": "Add Expense"}</button>
-                    
+                    <button>{this.props.callAPI ? "Edit Expense" : "Add Expense"}</button>
+
                     {this.state.errorState ? <p>{this.state.errorState}</p> : <p></p>}
 
 
                 </form>
-                {this.props.callAPI?<button>Remove Expense</button>: false}
+                {this.props.callAPI ? <button onClick = {this.removeExpense}>Remove Expense</button> : false}
             </div>
         )
     }
 }
 
-const mapStateToProps = (state)=>{
-    return{
+const mapStateToProps = (state) => {
+    return {
         token: state.auth.token
     }
 }
 
-export default connect(mapStateToProps)(ExpenseForm)
+export default withRouter(connect(mapStateToProps)(ExpenseForm))

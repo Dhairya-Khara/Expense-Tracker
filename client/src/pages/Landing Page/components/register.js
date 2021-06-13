@@ -10,7 +10,8 @@ class RegisterForm extends React.Component {
             firstName: "",
             lastName: "",
             email: "",
-            password: ""
+            password: "",
+            error:""
         }
     }
 
@@ -27,27 +28,41 @@ class RegisterForm extends React.Component {
             }
 
             const jsonValue = await response.json()
-            const isAuthenticated = jsonValue.auth
+            if(jsonValue === false){
+                this.setState(()=>{
+                    return{
+                        error: "Email is already registered. Please Log in.",
+                        firstName: "",
+                        lastName: "",
+                        email: "",
+                        password: ""
+                    }
+                })
+            }
+            else{
+                const isAuthenticated = jsonValue.auth
 
-            const emailInUse = this.state.email
-            const token = jsonValue.token
-            
-            this.setState(() => {
-                return {
-                    email: "",
-                    password: ""
-                }
-            })
-            if (isAuthenticated) {
-           
-                this.props.dispatch(changeAuth(true, emailInUse, token ))
+                const emailInUse = this.state.email
+                const token = jsonValue.token
                 
-                this.props.history.push('/dashboard')
-            
+                this.setState(() => {
+                    return {
+                        email: "",
+                        password: ""
+                    }
+                })
+                if (isAuthenticated) {
+               
+                    this.props.dispatch(changeAuth(true, emailInUse, token ))
+                    
+                    this.props.history.push('/dashboard')
+                
+                }
+                else {
+                    this.props.dispatch(changeAuth(true))
+                }
             }
-            else {
-                this.props.dispatch(changeAuth(true))
-            }
+           
         })
     }
 
@@ -119,6 +134,7 @@ class RegisterForm extends React.Component {
                     <br></br>
                     <input value = {this.state.password} placeholder="Password" type="password" onChange = {this.onPasswordChange}></input>
                     <button>Register</button>
+                    <p>{this.state.error}</p>
                 </form>
             </div>
         )

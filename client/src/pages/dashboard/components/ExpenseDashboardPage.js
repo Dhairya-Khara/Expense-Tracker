@@ -7,6 +7,7 @@ import { addExpense, resetExpenseReducer } from '../actions/expenses'
 import { changeAuth } from '../../../actions/auth'
 import {resetFilterReducer} from '../actions/filters'
 import { Link } from 'react-router-dom'
+import Header from './Header'
 
 
 
@@ -81,10 +82,12 @@ class ExpenseListDashboard extends React.Component {
         if (this.props.auth === true) {
             return (
                 <div>
+                    <Header></Header>
                     <h3>Expense List for {this.props.email}</h3>
                   
                     <Link to = "/">
                         <button onClick={this.logout}>Logout</button>
+                   
                     </Link>
 
                     <ExpenseListFilters />
@@ -95,7 +98,10 @@ class ExpenseListDashboard extends React.Component {
         else if (this.props.auth === false) {
             return (
                 <div>
-                    <p>Please Log in</p>
+                 
+                    {
+                        this.props.history.push("/")
+                    }
                 </div>
             )
         }
