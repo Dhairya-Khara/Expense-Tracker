@@ -1,5 +1,4 @@
 import React from 'react'
-import ExpensForm from './ExpenseForm'
 import { connect } from 'react-redux'
 import ExpenseForm from './ExpenseForm'
 import Header from './Header'
@@ -15,16 +14,17 @@ class EditPage extends React.Component {
             note: "",
         }
 
-
-
-
+        if (this.props.auth === false) {
+            this.props.history.push("/")
+        }
 
     }
 
 
-
+    //call to API to edit the specific expense
     callAPI() {
 
+        //id of expense to edit
         const expenseID = this.props.match.url.substring(19, this.props.match.url.length);
 
         let url = "http://localhost:8080/singleExpense?email=" + encodeURIComponent(this.props.email) + "&id=" + encodeURIComponent(expenseID)
@@ -41,8 +41,10 @@ class EditPage extends React.Component {
                 console.log(error)
                 return
             }
+
             const parseResponse = await response.json()
 
+            //setting the state with info acquried from the api call
             this.setState(() => {
                 return ({
                     description: parseResponse.description,
@@ -51,26 +53,20 @@ class EditPage extends React.Component {
                     note: parseResponse.note
                 })
             })
-            console.log(this.state)
+
         })
     }
 
     render() {
-        if (this.props.auth) {
-            return (
-                <div>
-                    <Header />
-                    {/* <ExpensForm description = {this.state.description} amount = {this.state.amount} createdAt = {this.state.createdAt} note = {this.state.note}/> */}
-                    <ExpenseForm callAPI={true} expenseID={this.props.match.url.substring(19, this.props.match.url.length)} email={this.props.email} />
-                </div>
-            )
-        }
-        else{
-            this.props.history.push("/")
-            return(<div></div>)
-        }
-        
 
+        return (
+            <div>
+                <Header />
+
+                {/* Expense form with info from the api call is rendered */}
+                <ExpenseForm callAPI={true} expenseID={this.props.match.url.substring(19, this.props.match.url.length)} email={this.props.email} />
+            </div>
+        )
 
     }
 
