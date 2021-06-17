@@ -1,4 +1,4 @@
-
+//Actions for the Expense Reducer
 
 //ADD_EXPENSE
 export const addExpense = ({ description = '', note = '', amount = 0, createdAt = 0, id = 0} = {}) => {
@@ -34,7 +34,7 @@ export const editExpense = (id, updates) =>{
     }
 }
 
-//RESET_STORE
+//RESET_STORE, used to clear dashboard before expenses are added to avoid repeats
 export const resetExpenseReducer=()=>{
     return{
         type: "RESET_STORE"

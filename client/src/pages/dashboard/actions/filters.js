@@ -1,3 +1,6 @@
+//Actions for the filter reducer
+
+
 export const setTextFilter = (text = '')=>{
     return{
         type: "SET_TEXT_FILTER",
@@ -33,6 +36,7 @@ export const setEndDate = (endDate = undefined)=>{
     }
 }
 
+////RESET_STORE, used to clear dashboard before expenses are added to avoid repeats
 export const resetFilterReducer = ()=>{
     return{
         type: "RESET_STORE"
