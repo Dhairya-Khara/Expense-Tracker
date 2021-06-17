@@ -6,22 +6,22 @@ import { connect } from 'react-redux'
 class LandingPage extends React.Component {
     constructor(props) {
         super(props)
+        if(props.auth){
+            props.history.push("/dashboard")
+        }
 
     }
-    render() {
-        if (!this.props.auth) {
-            return (
-                <div>
-                    <RegisterForm></RegisterForm>
-                    <LoginForm></LoginForm>
-                </div>
-            )
-        }
-        else if (this.props.auth) {
-            this.props.history.push("/dashboard")
-            return (<div></div>)
 
-        }
+
+
+    render() {
+
+        return (<div>
+            <RegisterForm></RegisterForm>
+            <LoginForm></LoginForm>
+        </div>)
+
+
 
 
     }

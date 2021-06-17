@@ -54,8 +54,7 @@ app.post('/loginUser', async (req, res) => {
 })
 
 app.post('/createExpense', auth, async (req, res) => {
-
-    const user = await User.findByEmail(req.query.email)
+    const user = req.user
 
     try {
         //save it
@@ -83,16 +82,14 @@ app.post('/createExpense', auth, async (req, res) => {
 })
 
 app.get('/getExpenses', auth, async (req, res) => {
-
-    const user = await User.findByEmail(req.query.email)
-
+    const user = req.user
     res.send(user.expenses)
 })
 
 app.post('/logout', auth, async (req, res) => {
 
     const token = req.query.token
-    const user = await User.findByEmail(req.query.email)
+    const user = req.user
 
     user.tokens.forEach((eachItem) => {
 
@@ -113,7 +110,7 @@ app.post('/logout', auth, async (req, res) => {
 app.get('/singleExpense', auth, async (req, res) => {
     const expenseId = req.query.id
 
-    const user = await User.findByEmail(req.query.email)
+    const user = req.user
 
 
     user.expenses.forEach((eachExpense) => {
@@ -149,7 +146,7 @@ app.patch('/updateExpense', auth, async (req, res) => {
 app.post('/deleteExpense', auth, async(req,res)=>{
  
     const expenseId = req.query.id
-    const user = await User.findByEmail(req.query.email)
+    const user = req.user
 
     user.expenses.forEach((eachItem) => {
         
