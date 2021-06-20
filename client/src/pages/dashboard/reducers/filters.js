@@ -1,5 +1,8 @@
+//FILTER REDUCER
+
 import moment from 'moment'
 
+//default state, no fulters
 const filtersReucerDefaultState = {
     text: "",
     sortBy: "date",

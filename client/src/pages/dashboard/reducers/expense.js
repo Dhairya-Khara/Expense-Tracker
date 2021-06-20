@@ -1,3 +1,6 @@
+//EXPENSE REDUCER
+
+//default state is an empty array, is filled up with each object which is a javascript objec
 const expensesReducerDefaultState = []
 
 const expensesReducer = (state = expensesReducerDefaultState, action) => {
