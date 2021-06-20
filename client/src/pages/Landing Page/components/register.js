@@ -6,6 +6,7 @@ import { changeAuth } from '../../../actions/auth'
 class RegisterForm extends React.Component {
     constructor(props) {
         super(props)
+        //react state that stores information requried for registration
         this.state = {
             firstName: "",
             lastName: "",
@@ -15,6 +16,7 @@ class RegisterForm extends React.Component {
         }
     }
 
+    //if registeration is successful, directly log user in
     logUserIn = () => {
         let url = "http://localhost:8080/loginUser?email=" + encodeURIComponent(this.state.email) + "&password=" + encodeURIComponent(this.state.password)
       
@@ -28,6 +30,7 @@ class RegisterForm extends React.Component {
             }
 
             const jsonValue = await response.json()
+            //if email is already registered
             if(jsonValue === false){
                 this.setState(()=>{
                     return{
@@ -39,7 +42,11 @@ class RegisterForm extends React.Component {
                     }
                 })
             }
+
+            //successful registeration
             else{
+
+                //standard log in procedure
                 const isAuthenticated = jsonValue.auth
 
                 const emailInUse = this.state.email
@@ -66,6 +73,7 @@ class RegisterForm extends React.Component {
         })
     }
 
+    //api called to register user and store in database
     callAPI=() =>{
         fetch("http://localhost:8080/createUser?firstName=" + encodeURIComponent(this.state.firstName) 
         + "&lastName=" + encodeURIComponent(this.state.lastName) + "&email=" + encodeURIComponent(this.state.email) + "&password="+encodeURIComponent(this.state.password),
@@ -74,18 +82,12 @@ class RegisterForm extends React.Component {
             if (error) {
                 console.log("error")
             }
-            // this.setState(()=>{
-            //     return{
-            //         firstName: "",
-            //         lastName: "",
-            //         email: "",
-            //         password: ""
-            //     }
-            // })
+           //call logUserIn to try and log in after registeration
             this.logUserIn()
         })
     }
     
+    //method handling change in firstName state
     onFirstNameChange=(e)=>{
         const firstName = e.target.value;
         this.setState(()=>{
@@ -94,6 +96,8 @@ class RegisterForm extends React.Component {
             }
         })
     }
+
+    //method handling change in lastName state
     onLastNameChange=(e)=>{
         const lastName = e.target.value;
         this.setState(()=>{
@@ -102,6 +106,8 @@ class RegisterForm extends React.Component {
             }
         })
     }
+
+    //method handling change in email state
     onEmailChange=(e)=>{
         const email = e.target.value;
         this.setState(()=>{
@@ -110,6 +116,8 @@ class RegisterForm extends React.Component {
             }
         })
     }
+
+    //method handling change in password state
     onPasswordChange = (e)=>{
         const password = e.target.value
         this.setState(()=>{
@@ -134,6 +142,7 @@ class RegisterForm extends React.Component {
                     <br></br>
                     <input value = {this.state.password} placeholder="Password" type="password" onChange = {this.onPasswordChange}></input>
                     <button>Register</button>
+                    {/* error is rendered only if duplicate email is provided */}
                     <p>{this.state.error}</p>
                 </form>
             </div>
