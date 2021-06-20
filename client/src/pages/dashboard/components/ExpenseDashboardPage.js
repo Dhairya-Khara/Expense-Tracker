@@ -15,21 +15,18 @@ import Header from './Header'
 class ExpenseListDashboard extends React.Component {
     constructor(props) {
         super(props)
+
         if (props.auth === false) {
             props.history.push("/")
         }
-    }
-
-
-    componentWillMount() {
 
         //clearing reduce expenser before filling it up from the database to avoid duplicate data
         this.props.dispatch(resetExpenseReducer())
 
         //calling api to get all the expenses
-        const url = "http://localhost:8080/getExpenses?email=" + encodeURIComponent(this.props.email)
+        const url = "http://localhost:8080/getExpenses?email=" + encodeURIComponent(props.email)
         let h = new Headers({
-            "Authorization": "Bearer " + this.props.token
+            "Authorization": "Bearer " + props.token
         })
 
         let req = new Request(url, {
@@ -49,8 +46,11 @@ class ExpenseListDashboard extends React.Component {
             })
         })
 
+        
     }
 
+
+    
     //method called when logout button is clicked
     logout = (e) => {
 
