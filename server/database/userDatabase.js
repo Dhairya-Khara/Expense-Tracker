@@ -50,7 +50,7 @@ Schema.statics.findByCredentials = async (email, password)=>{
 
 Schema.methods.generateAuthToken = async function(){
     const user = this
-    const token = jwt.sign({_id:user.id.toString()}, 'thisismynewcourse', {expiresIn: 60})
+    const token = jwt.sign({_id:user.id.toString()}, 'thisismynewcourse')
 
     user.tokens = user.tokens.concat({token})
     await user.save()

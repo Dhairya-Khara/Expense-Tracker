@@ -13,6 +13,8 @@ class ExpenseForm extends React.Component {
     constructor(props) {
         super(props)
         this.redirectToDashboard = this.redirectToDashboard.bind(this);
+
+        //react state to store info of all the textboxes
         this.state = {
             description: "",
             note: "",
@@ -22,6 +24,7 @@ class ExpenseForm extends React.Component {
             errorState: ""
         }
 
+        //this method is called if user wants to edit the expenses and textboxes need to be filled with the info from the indicidual expense
         if (props.callAPI) {
             this.getInfoOfIndividualExpenseFromAPI()
 
@@ -30,6 +33,7 @@ class ExpenseForm extends React.Component {
 
     }
 
+    //method handling the state change of description
     onDescriptionChange = (e) => {
         const description = e.target.value;
         this.setState(() => {
@@ -38,6 +42,8 @@ class ExpenseForm extends React.Component {
             }
         })
     }
+
+    //method handling the state change of note box
     onNoteChange = (e) => {
         const note = e.target.value;
         this.setState(() => {
@@ -46,6 +52,8 @@ class ExpenseForm extends React.Component {
             }
         })
     }
+
+    //method handling the state change of amount text box
     onAmountChange = (e) => {
         const amount = e.target.value;
         if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
@@ -54,6 +62,8 @@ class ExpenseForm extends React.Component {
             })
         }
     }
+
+    //method handling the state change of date picker
     onDateChange = (createdAt) => {
         this.setState(() => {
             if (createdAt) {
@@ -64,6 +74,8 @@ class ExpenseForm extends React.Component {
 
         })
     }
+
+    //method handling the state change of calendar widget
     onFocusChange = ({ focused }) => {
         this.setState(() => {
             return {
@@ -71,8 +83,12 @@ class ExpenseForm extends React.Component {
             }
         })
     }
+
+    //method handling the submission of the expense form
     onSubmit = (e) => {
         e.preventDefault();
+
+        //the following code should be executed if user is creating a new expense
         if (!this.props.callAPI) {
             if (!this.state.description || !this.state.amount) {
                 this.setState(() => {
@@ -96,6 +112,8 @@ class ExpenseForm extends React.Component {
 
             }
         }
+
+        //the following code should be executed if user is editting existing expense
         else if (this.props.callAPI) {
             this.editExpense()
             this.redirectToDashboard(this.props)
@@ -103,18 +121,21 @@ class ExpenseForm extends React.Component {
 
     }
 
+    //redirect to dashboard after form submission
     redirectToDashboard = (props)=>{
+        ///time out is set because database needs to be updated BEFORE going to dashboard. Else, outdated dashboard is rendered even if database is updated
         setTimeout(() => {
             props.history.push("/dashboard")
         }, 10)
     }
 
+    //call this method when editting expense
     getInfoOfIndividualExpenseFromAPI = () => {
         
-
-
+        //expense id stores the id of the individual expense that needs to be editted
         const expenseID = this.props.expenseID
         const email = this.props.email
+        
         let url = "http://localhost:8080/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
 
         let h = new Headers({
@@ -131,6 +152,7 @@ class ExpenseForm extends React.Component {
             }
             const parseResponse = await response.json()
             
+            //after getting information from database, store it in react state
             this.setState(() => {
                 return {
                     description: parseResponse.description,
@@ -144,6 +166,8 @@ class ExpenseForm extends React.Component {
 
     }
 
+    //method called on submission of the edit expense form from onSubmit()
+    //api call to edit expense in database
     editExpense = () => {
 
         const expenseID = this.props.expenseID
@@ -170,6 +194,8 @@ class ExpenseForm extends React.Component {
         })
     }
 
+    //method called when remove expense button is clicked
+    //api call to remove the individual expense from the database
     removeExpense=()=>{
         
         const expenseID = this.props.expenseID
@@ -193,6 +219,8 @@ class ExpenseForm extends React.Component {
             }
          
         })
+
+        //redirect to dashboard after expense is deleted
         this.redirectToDashboard(this.props)
     }
 
@@ -200,6 +228,7 @@ class ExpenseForm extends React.Component {
         
         return (
             <div>
+                {/* The main form of this page. Information will already be filled if editting expense */}
                 <form onSubmit={this.onSubmit}>
                     <input value={this.state.description} placeholder="Description" type="text" autoFocus onChange={this.onDescriptionChange}></input>
                     <input value={this.state.amount} placeholder="Amount" type="number" onChange={this.onAmountChange}></input>
@@ -223,6 +252,7 @@ class ExpenseForm extends React.Component {
 
 
                 </form>
+                {/* Only render the RemoveExpense button if the form is rendered while for editting purposes */}
                 {this.props.callAPI ? <button onClick = {this.removeExpense}>Remove Expense</button> : false}
             </div>
         )
