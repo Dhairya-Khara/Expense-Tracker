@@ -1,3 +1,5 @@
+//this method applies filters and expense. Retuns filters expenses
+
 import moment from 'moment'
 
 const getVisibleExpenses = (expenses, {text, sortBy, startDate, endDate})=>{
