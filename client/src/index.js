@@ -8,8 +8,6 @@ import configureStore from './store/configureStore'
 import AppRouter from './routers/AppRouter'
 
 
-
-
 const store = configureStore()
 const persistor = persistStore(store)
 
