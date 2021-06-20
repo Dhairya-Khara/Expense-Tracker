@@ -14,8 +14,8 @@ class EditPage extends React.Component {
             note: "",
         }
 
-        if (this.props.auth === false) {
-            this.props.history.push("/")
+        if (props.auth === false) {
+            props.history.push("/")
         }
 
     }
