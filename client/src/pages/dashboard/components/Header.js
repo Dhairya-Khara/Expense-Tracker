@@ -1,6 +1,7 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
+//Header component that is rendered on every page after user logs in
 const Header = () => {
     return (
         <header>
