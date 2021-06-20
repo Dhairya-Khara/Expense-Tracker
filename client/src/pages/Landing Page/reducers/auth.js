@@ -1,3 +1,5 @@
+//authentication reducer, stores information deals with authentication such as bool value of auth, email, and jwt token
+
 const authReducerDefaultState = {
     authenticated: false
 }
