@@ -10,15 +10,13 @@ import AppRouter from './routers/AppRouter'
 
 
 
-
-
-
 const store = configureStore()
 const persistor = persistStore(store)
 
 const jsx = (
     <div>
         <Provider store={store}>
+        {/* Persist Gate - requirement to user redux-persist, redux store is preserved on page refresh */}
             <PersistGate loading={null} persistor={persistor}>
                 <AppRouter />
             </PersistGate>
