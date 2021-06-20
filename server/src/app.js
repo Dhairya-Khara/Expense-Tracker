@@ -7,11 +7,11 @@ const auth = require('../middleware/auth');
 const app = express()
 const port = process.env.PORT || 8080
 
-
+//required because client hosted on post 3000 and server hosted on port 8080
 app.use(cors())
 
 
-
+//api endpoint for registering user
 app.post('/createUser', async (req, res) => {
     const firstName = req.query.firstName
     const lastName = req.query.lastName
@@ -34,6 +34,7 @@ app.post('/createUser', async (req, res) => {
 
 })
 
+//api endpoint to log user in 
 app.post('/loginUser', async (req, res) => {
     try {
 
@@ -48,11 +49,12 @@ app.post('/loginUser', async (req, res) => {
     }
     catch (e) {
         res.send(false)
-        // res.status(400).send(e)
+
         console.log(e)
     }
 })
 
+//api endpoint to create expense for user, auth required
 app.post('/createExpense', auth, async (req, res) => {
     const user = req.user
 
@@ -75,17 +77,19 @@ app.post('/createExpense', auth, async (req, res) => {
             }
         })
 
-        // user.save()
+    
     } catch (e) {
         console.log(e)
     }
 })
 
+//api endpoint to get all the expenses of the user to render on dashboard, auth required
 app.get('/getExpenses', auth, async (req, res) => {
     const user = req.user
     res.send(user.expenses)
 })
 
+//api endpoint to log user out, auth required
 app.post('/logout', auth, async (req, res) => {
 
     const token = req.query.token
@@ -107,6 +111,7 @@ app.post('/logout', auth, async (req, res) => {
     })
 })
 
+//api endpoint to get a single expense, used for editting individual expense, auth required
 app.get('/singleExpense', auth, async (req, res) => {
     const expenseId = req.query.id
 
@@ -127,6 +132,7 @@ app.get('/singleExpense', auth, async (req, res) => {
     })
 })
 
+//api endpoint to update a single expense, auth required
 app.patch('/updateExpense', auth, async (req, res) => {
     const expenseId = req.query.id
     User.updateOne({
@@ -143,6 +149,7 @@ app.patch('/updateExpense', auth, async (req, res) => {
         }).exec()
 })
 
+//api endpoint to delete the chosen expense, auth rquired
 app.post('/deleteExpense', auth, async(req,res)=>{
  
     const expenseId = req.query.id

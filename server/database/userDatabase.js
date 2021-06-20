@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
+//Schema for database
 var Schema = mongoose.Schema
 
 var Schema = new Schema({
@@ -33,7 +34,7 @@ Schema.statics.findByEmail = async(email)=>{
     return user;
 }
 
-//finding to login
+//trying to login
 Schema.statics.findByCredentials = async (email, password)=>{
     const user = await User.findOne({email})
    
@@ -48,6 +49,7 @@ Schema.statics.findByCredentials = async (email, password)=>{
     return user
 }
 
+//generateing auth token when logIn is sucuesful
 Schema.methods.generateAuthToken = async function(){
     const user = this
     const token = jwt.sign({_id:user.id.toString()}, 'thisismynewcourse')
