@@ -4,6 +4,8 @@ import LoginForm from './login'
 import GoogleButton from 'react-google-button'
 import { connect } from 'react-redux'
 
+import {changeAuth} from "../../../actions/auth"
+
 const GOOGLE_BUTTON_ID = "google-sign-in-button";
 
 //Landing page of the application, renders the login and register form
@@ -22,12 +24,26 @@ class LandingPage extends React.Component {
 
     //method called when sign in is complete
     onSignIn = (googleUser) => {
-        console.log("signing in")
+        
         var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+        
+
+        let url = "http://localhost:8080/loginUser?email="+encodeURIComponent(profile.getEmail())+"&name="+encodeURIComponent(profile.getName())
+        let req = new Request(url, {
+            method: "POST"
+        })
+
+        fetch(req).then(async(response, error)=>{
+            if(error){
+                console.log("error line 39 landingPage.js")
+            }
+            const jsonValue = await response.json()
+            const isAuthenticated = jsonValue.auth
+            const token = jsonValue.token
+
+            this.props.dispatch(changeAuth(true, profile.getEmail(), token))
+            this.props.history.push("/dashboard")
+        })
     }
 
     //instructions to render google button

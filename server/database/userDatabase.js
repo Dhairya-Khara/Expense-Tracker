@@ -10,60 +10,74 @@ var Schema = new Schema({
         type: String,
         unique: true
     },
-    firstName: {
-        type:String
+    name: {
+        type: String
     },
-    lastName:{
-        type:String
-    },  
-    password:{
-        type:String
-    },
+
     tokens: [{
-        token:{
+        token: {
             type: String,
-            required:true
+            required: true
         }
     }],
-    expenses:[]
+    expenses: [],
 })
 
 //finding email to add expense to that user
-Schema.statics.findByEmail = async(email)=>{
-    const user = await User.findOne({email})
+Schema.statics.findByEmail = async (email) => {
+    const user = await User.findOne({ email })
+    return user;
+}
+
+Schema.statics.logUserInUsingGoogle = async ({ email, name }) => {
+    const userInfo = {
+        email,
+        name
+    }
+
+    let user = await User.findOne({email })
+
+   
+
+    if (user === null) {
+        //create user
+        user = new User(userInfo)
+    }
+    //return user
     return user;
 }
 
 //trying to login
-Schema.statics.findByCredentials = async (email, password)=>{
-    const user = await User.findOne({email})
-   
-    if(!user){
+Schema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
+
+    if (!user) {
         throw new Error('Unable to Login')
     }
     const isMatch = await bcrypt.compare(password, user.password)
-    if(!isMatch){
-       
+    if (!isMatch) {
+
         throw new Error('Unable to Login')
     }
     return user
 }
 
 //generateing auth token when logIn is sucuesful
-Schema.methods.generateAuthToken = async function(){
+Schema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({_id:user.id.toString()}, 'thisismynewcourse')
+    
+    const token = jwt.sign({ _id: user.id.toString() }, 'thisismynewcourse')
 
-    user.tokens = user.tokens.concat({token})
+    user.tokens = user.tokens.concat({ token })
     await user.save()
     return token
 }
 
 //hash plain text password
-Schema.pre('save', async function(next){
+Schema.pre('save', async function (next) {
     const user = this
 
-    if(user.isModified('password')){
+    if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
 

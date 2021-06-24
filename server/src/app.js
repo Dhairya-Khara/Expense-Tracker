@@ -38,7 +38,16 @@ app.post('/createUser', async (req, res) => {
 app.post('/loginUser', async (req, res) => {
     try {
 
-        const user = await User.findByCredentials(req.query.email, req.query.password)
+        //const user = await User.findByCredentials(req.query.email, req.query.password)
+     
+        const userInfo = {
+            email: req.query.email,
+            name: req.query.name
+        }
+
+     
+
+        const user = await User.logUserInUsingGoogle(userInfo)
         const token = await user.generateAuthToken()
 
         res.set({
