@@ -7,6 +7,8 @@ import { PersistGate } from 'redux-persist/integration/react'
 import configureStore from './store/configureStore'
 import AppRouter from './routers/AppRouter'
 
+import 'normalize.css/normalize.css';
+import './styles/styles.scss'
 
 const store = configureStore()
 const persistor = persistStore(store)

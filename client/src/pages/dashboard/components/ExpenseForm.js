@@ -231,7 +231,7 @@ class ExpenseForm extends React.Component {
                 {/* The main form of this page. Information will already be filled if editting expense */}
                 <form onSubmit={this.onSubmit}>
                     <input value={this.state.description} placeholder="Description" type="text" autoFocus onChange={this.onDescriptionChange}></input>
-                    <input value={this.state.amount} placeholder="Amount" type="number" onChange={this.onAmountChange}></input>
+                    <input value={this.state.amount} placeholder="Amount" type="text" onChange={this.onAmountChange}></input>
                     <br></br>
                     <SingleDatePicker
                        

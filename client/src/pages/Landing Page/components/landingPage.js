@@ -4,7 +4,8 @@ import LoginForm from './login'
 import GoogleButton from 'react-google-button'
 import { connect } from 'react-redux'
 
-import {changeAuth} from "../../../actions/auth"
+import { changeAuth } from "../../../actions/auth"
+
 
 const GOOGLE_BUTTON_ID = "google-sign-in-button";
 
@@ -17,24 +18,22 @@ class LandingPage extends React.Component {
             props.history.push("/dashboard")
         }
 
-    
-
 
     }
 
     //method called when sign in is complete
     onSignIn = (googleUser) => {
-        
-        var profile = googleUser.getBasicProfile();
-        
 
-        let url = "http://localhost:8080/loginUser?email="+encodeURIComponent(profile.getEmail())+"&name="+encodeURIComponent(profile.getName())
+        var profile = googleUser.getBasicProfile();
+
+
+        let url = "http://localhost:8080/loginUser?email=" + encodeURIComponent(profile.getEmail()) + "&name=" + encodeURIComponent(profile.getName())
         let req = new Request(url, {
             method: "POST"
         })
 
-        fetch(req).then(async(response, error)=>{
-            if(error){
+        fetch(req).then(async (response, error) => {
+            if (error) {
                 console.log("error line 39 landingPage.js")
             }
             const jsonValue = await response.json()
@@ -48,6 +47,7 @@ class LandingPage extends React.Component {
 
     //instructions to render google button
     componentDidMount() {
+
         window.gapi.signin2.render(GOOGLE_BUTTON_ID, {
             'scope': 'https://www.googleapis.com/auth/plus.login',
             'width': 200,
@@ -60,14 +60,19 @@ class LandingPage extends React.Component {
 
     render() {
 
-        return (<div>
-            {/* <RegisterForm></RegisterForm>
-            <LoginForm></LoginForm> */}
+        return (
 
-            {/* rendering google button */}
-            <div id = {GOOGLE_BUTTON_ID}/>
+            <div className = "landingPageContainer">
 
-        </div>)
+
+                {/* rendering google button */}
+                <div className="text-about-app">
+                    <p>Expense Tracker</p>
+                    <p>By Dhairya Khara</p>
+                </div>
+                <div id={GOOGLE_BUTTON_ID} />
+
+            </div>)
 
 
 
@@ -76,6 +81,7 @@ class LandingPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+
     return {
         auth: state.auth.authenticated
     }

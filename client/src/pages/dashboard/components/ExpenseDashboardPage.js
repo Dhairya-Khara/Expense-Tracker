@@ -4,13 +4,9 @@ import { connect } from 'react-redux'
 import ExpenseList from './ExpenseList'
 import ExpenseListFilters from './ExpenseListFilters'
 import { addExpense, resetExpenseReducer } from '../actions/expenses'
-import { changeAuth } from '../../../actions/auth'
-import { resetFilterReducer } from '../actions/filters'
-import { Link } from 'react-router-dom'
+
+
 import Header from './Header'
-
-
-
 
 class ExpenseListDashboard extends React.Component {
     constructor(props) {
@@ -51,35 +47,7 @@ class ExpenseListDashboard extends React.Component {
 
 
     
-    //method called when logout button is clicked
-    logout = (e) => {
 
-
-        const url = "http://localhost:8080/logout?email=" + encodeURIComponent(this.props.email) + "&token=" + encodeURIComponent(this.props.token)
-        let h = new Headers({
-            "Authorization": "Bearer " + this.props.token
-        })
-
-        let req = new Request(url, {
-            method: "POST",
-            headers: h
-        })
-
-        fetch(req).then(() => {
-
-        }).catch((error) => {
-            console.log(error)
-
-        })
-
-        //changing auth to false, and resetting expense and filter reducers
-        this.props.dispatch(changeAuth(false, undefined, undefined))
-        this.props.dispatch(resetExpenseReducer())
-        this.props.dispatch(resetFilterReducer())
-
-
-
-    }
 
 
 
@@ -91,10 +59,7 @@ class ExpenseListDashboard extends React.Component {
                 <Header></Header>
                 <h3>Expense List for {this.props.email}</h3>
 
-                <Link to="/">
-                    <button onClick={this.logout}>Logout</button>
-
-                </Link>
+               
 
                 <ExpenseListFilters />
                 <ExpenseList />
