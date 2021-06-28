@@ -57,7 +57,7 @@ class Header extends React.Component {
                 <header>
                     <h1>Expense Tracker</h1>
                     <Link to="/">
-                        <button onClick={this.logout}>Logout</button>
+                        <button className = "logoutButton" onClick={this.logout}>Logout</button>
 
                     </Link>
 

@@ -1,23 +1,28 @@
 header{
     background-color: black;
-    padding: 1rem 0;
+    padding: 0;
     color: white;
     margin-bottom: $m-size;
     display: flex;
-   
+    justify-content: space-around;
+ 
+
 }
+
 
 h1{
-    margin-right: auto;
-    margin-left: 30px;
+    // margin-right: auto;
+    // margin-left: 300px;
+    
 }
 
-button{
-    margin-left: auto;
+.logoutButton{
+ 
     border: none;
     color: white;
     background-color: inherit;
     padding-top: $m-size;
-    margin-right: 30px;
-    margin-top: 15px;
+    // margin-right: 30px;
+    margin-top: 16px;
 }
+
