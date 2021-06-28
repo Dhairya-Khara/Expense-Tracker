@@ -1,0 +1,23 @@
+header{
+    background-color: black;
+    padding: 1rem 0;
+    color: white;
+    margin-bottom: $m-size;
+    display: flex;
+   
+}
+
+h1{
+    margin-right: auto;
+    margin-left: 30px;
+}
+
+button{
+    margin-left: auto;
+    border: none;
+    color: white;
+    background-color: inherit;
+    padding-top: $m-size;
+    margin-right: 30px;
+    margin-top: 15px;
+}

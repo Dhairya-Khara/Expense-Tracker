@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink, Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import { changeAuth } from '../../../actions/auth'
 import { resetFilterReducer } from '../actions/filters'
@@ -66,4 +67,14 @@ class Header extends React.Component {
     }
 }
 
-export default Header
+const mapStateToProps = (state) => {
+
+    return {
+        auth: state.auth.authenticated,
+        email: state.auth.email,
+        token: state.auth.token
+    }
+}
+
+
+export default connect(mapStateToProps)(Header);
