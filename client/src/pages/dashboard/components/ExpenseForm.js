@@ -3,7 +3,7 @@ import moment from 'moment'
 import { SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css';
 import { connect } from 'react-redux'
-import { withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -122,7 +122,7 @@ class ExpenseForm extends React.Component {
     }
 
     //redirect to dashboard after form submission
-    redirectToDashboard = (props)=>{
+    redirectToDashboard = (props) => {
         ///time out is set because database needs to be updated BEFORE going to dashboard. Else, outdated dashboard is rendered even if database is updated
         setTimeout(() => {
             props.history.push("/dashboard")
@@ -131,11 +131,11 @@ class ExpenseForm extends React.Component {
 
     //call this method when editting expense
     getInfoOfIndividualExpenseFromAPI = () => {
-        
+
         //expense id stores the id of the individual expense that needs to be editted
         const expenseID = this.props.expenseID
         const email = this.props.email
-        
+
         let url = "http://localhost:8080/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
 
         let h = new Headers({
@@ -151,12 +151,12 @@ class ExpenseForm extends React.Component {
                 return
             }
             const parseResponse = await response.json()
-            
+
             //after getting information from database, store it in react state
             this.setState(() => {
                 return {
                     description: parseResponse.description,
-                    amount: parseResponse.amount/1000,
+                    amount: parseResponse.amount / 1000,
                     createdAt: moment(parseResponse.createdAt),
                     note: parseResponse.note
 
@@ -196,13 +196,13 @@ class ExpenseForm extends React.Component {
 
     //method called when remove expense button is clicked
     //api call to remove the individual expense from the database
-    removeExpense=()=>{
-        
+    removeExpense = () => {
+
         const expenseID = this.props.expenseID
         const email = this.props.email
-        
+
         let url = "http://localhost:8080/deleteExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
-          
+
 
         let h = new Headers({
             "Authorization": this.props.token
@@ -215,9 +215,9 @@ class ExpenseForm extends React.Component {
         fetch(req).then(async (response, error) => {
             if (error) {
                 console.log("error")
-                
+
             }
-         
+
         })
 
         //redirect to dashboard after expense is deleted
@@ -225,17 +225,18 @@ class ExpenseForm extends React.Component {
     }
 
     render() {
-        
+
         return (
             <div>
                 {/* The main form of this page. Information will already be filled if editting expense */}
-                <form onSubmit={this.onSubmit}>
-                    <input value={this.state.description} placeholder="Description" type="text" autoFocus onChange={this.onDescriptionChange}></input>
-                    <input value={this.state.amount} placeholder="Amount" type="text" onChange={this.onAmountChange}></input>
+                <form className="form" onSubmit={this.onSubmit}>
+                    {this.state.errorState ? <p className="form__error">{this.state.errorState}</p> : <p></p>}
+                    <input className="text-input" value={this.state.description} placeholder="Description" type="text" autoFocus onChange={this.onDescriptionChange}></input>
+                    <input className="text-input" value={this.state.amount} placeholder="Amount" type="text" onChange={this.onAmountChange}></input>
                     <br></br>
                     <SingleDatePicker
-                       
-                        date = {this.state.createdAt}
+
+                        date={this.state.createdAt}
                         onDateChange={this.onDateChange}
                         focused={this.state.calendarFocused}
                         onFocusChange={this.onFocusChange}
@@ -245,15 +246,19 @@ class ExpenseForm extends React.Component {
                         }}
                     />
                     <br></br>
-                    <textarea value={this.state.note} placeholder="Add a note for your expense (optional)" onChange={this.onNoteChange}></textarea>
-                    <button>{this.props.callAPI ? "Edit Expense" : "Add Expense"}</button>
+                    <textarea className="text-area" value={this.state.note} placeholder="Add a note for your expense (optional)" onChange={this.onNoteChange}></textarea>
 
-                    {this.state.errorState ? <p>{this.state.errorState}</p> : <p></p>}
+                    <div>
+                        <button className = "button">{this.props.callAPI ? "Edit Expense" : "Add Expense"}</button>
+                    </div>
+
+
+
 
 
                 </form>
                 {/* Only render the RemoveExpense button if the form is rendered while for editting purposes */}
-                {this.props.callAPI ? <button onClick = {this.removeExpense}>Remove Expense</button> : false}
+                {this.props.callAPI ? <button className = "button button--secondary" onClick={this.removeExpense}>Remove Expense</button> : false}
             </div>
         )
     }

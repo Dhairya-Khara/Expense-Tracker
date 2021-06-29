@@ -62,9 +62,16 @@ class EditPage extends React.Component {
         return (
             <div>
                 <Header />
-
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header__title">Edit Expense</h1>
+                    </div>
+                </div>
                 {/* Expense form with info from the api call is rendered */}
-                <ExpenseForm callAPI={true} expenseID={this.props.match.url.substring(19, this.props.match.url.length)} email={this.props.email} />
+                <div className="content-container">
+                    <ExpenseForm callAPI={true} expenseID={this.props.match.url.substring(19, this.props.match.url.length)} email={this.props.email} />
+                </div>
+
             </div>
         )
 

@@ -53,7 +53,7 @@ class LandingPage extends React.Component {
             'width': 200,
             'height': 50,
             'longtitle': true,
-            'theme': 'light',
+            'theme': 'dark',
             'onsuccess': this.onSignIn
         });
     }
@@ -62,15 +62,13 @@ class LandingPage extends React.Component {
 
         return (
 
-            <div className = "landingPageContainer">
-
-
-                {/* rendering google button */}
-                <div className="text-about-app">
-                    <p>Expense Tracker</p>
+            <div className="landingPageContainer">
+                <div className = "landingPageContainer__box">
+                    <h1 className = "landingPageContainer__title">Expense Tracker</h1>
                     <p>By Dhairya Khara</p>
+                    {/* rendering google button */}
+                    <div id={GOOGLE_BUTTON_ID} />
                 </div>
-                <div id={GOOGLE_BUTTON_ID} />
 
             </div>)
 

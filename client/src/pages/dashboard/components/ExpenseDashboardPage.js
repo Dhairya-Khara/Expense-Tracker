@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import ExpenseList from './ExpenseList'
 import ExpenseListFilters from './ExpenseListFilters'
@@ -14,7 +14,7 @@ class ExpenseListDashboard extends React.Component {
     constructor(props) {
         super(props)
 
-        
+
 
         if (props.auth === false) {
             props.history.push("/")
@@ -45,45 +45,69 @@ class ExpenseListDashboard extends React.Component {
 
             })
         })
-        
-        
-        
+
+
+
     }
 
-    renderSubtitle = ()=>{
-        if(this.props.expenses[0] &&(this.props.expenses).length <= 0){
-         
-            return "Viewing 0 expenses totalling $0.00"
+    renderSubtitle = () => {
+        if (this.props.expenses[0] && (this.props.expenses).length <= 0) {
+
+            return (
+                <div>
+                    Viewing <span>0</span> expenses totalling <span>$0.00</span>
+                </div>
+            )
         }
-        else if((this.props.expenses).length === 1){ 
-           
-            return "Viewing 1 expense totalling $" +this.props.expenses[0].amount
+        else if ((this.props.expenses).length === 1) {
+
+            return (
+                <div>
+                    Viewing <span>1</span> expense totalling <span>${this.props.expenses[0].amount / 1000}</span>
+                </div>
+            )
         }
         let totalAmount = 0
-        for(let i = 0; i<= this.props.expenses.length; i++){
-            if(this.props.expenses[i]){
-                totalAmount += (this.props.expenses[i].amount)/1000
+        for (let i = 0; i <= this.props.expenses.length; i++) {
+            if (this.props.expenses[i]) {
+                totalAmount += (this.props.expenses[i].amount) / 1000
             }
         }
-      
-        
-        return "Viewing " + this.props.expenses.length + " expenses totalling $"+ totalAmount
-        
-    }
-   
-    render() {
-  
+
 
         return (
             <div>
-                <Header/>
-                <p className = "subtitle">{this.renderSubtitle()}</p>
-                <Link to = "/dashboard/create">
-                   <button onClick = {this.createExpense}>Add Expense</button>
-                </Link>
+                Viewing <span>{this.props.expenses.length}</span> expenses totalling <span>${totalAmount}</span>
+            </div>
+        )
+
+
+    }
+
+    render() {
+
+
+        return (
+            <div>
+                <Header />
+
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header__title">{this.renderSubtitle()}</h1>
+
+                        <div className="page-header__actions">
+                            <Link to="/dashboard/create">
+                                <button className="button" onClick={this.createExpense}>Add Expense</button>
+                            </Link>
+                        </div>
+                    </div>
+
+                </div>
+
                 <ExpenseListFilters />
                 <ExpenseList />
             </div>
+
         )
 
 

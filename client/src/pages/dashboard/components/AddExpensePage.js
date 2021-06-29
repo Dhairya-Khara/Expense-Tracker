@@ -43,17 +43,23 @@ class AddExpensePage extends React.Component {
 
             <div>
                 <Header />
-                <h1>Add Expense</h1>
-                <ExpenseForm onSubmit={(expense) => {
+                <div className="page-header">
+                    <div className="content-container">
+                        <h1 className="page-header__title">Add Expense</h1>
+                    </div>
+                </div>
+                <div className="content-container">
+                    <ExpenseForm onSubmit={(expense) => {
 
 
-                    this.callAPI(expense)
-                    //time out is set because database needs to be updated BEFORE going to dashboard. Else, outdated dashboard is rendered even if database is updated
-                    setTimeout(() => {
-                        this.props.history.push('/dashboard')
-                    }, 10)
+                        this.callAPI(expense)
+                        //time out is set because database needs to be updated BEFORE going to dashboard. Else, outdated dashboard is rendered even if database is updated
+                        setTimeout(() => {
+                            this.props.history.push('/dashboard')
+                        }, 10)
 
-                }} />
+                    }} />
+                </div>
             </div>
         )
 

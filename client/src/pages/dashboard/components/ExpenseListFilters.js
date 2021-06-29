@@ -23,39 +23,50 @@ class ExpenseListFilters extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div className="content-container">
                 {/* input dealing with text filter */}
-                <input type="text" value={this.props.filters.text} onChange={(e) => {
-                    this.props.dispatch(setTextFilter(e.target.value))
+                <div className = "input-group">
+                    <div className = "input-group__item">
+                        <input placeholder = "Search expenses" className = "text-input" type="text" value={this.props.filters.text} onChange={(e) => {
+                            this.props.dispatch(setTextFilter(e.target.value))
 
-                }}>
+                        }}>
 
-                </input>
+                        </input>
+                    </div>
+                    <div className = "input-group__item">
+                        {/* input dealing with date filter */}
+                        <select className = "select" onChange={(e) => {
+                            if (e.target.value === "date") {
+                                this.props.dispatch(sortByDate())
+                            }
+                            else if (e.target.value === "amount") {
+                                this.props.dispatch(sortByAmount())
+                            }
+                        }}>
+                            {/* user may choose to filter between DATE or AMOUNT */}
+                            <option value="date">Date</option>
+                            <option value="amount">Amount</option>
+                        </select>
+                    </div>
+                    <div className = "input-group__item">
+                        {/* values required to use calendar widget */}
+                        <DateRangePicker
+                            startDate={this.props.filters.startDate}
+                            endDate={this.props.filters.endDate}
+                            onDatesChange={this.onDatesChange}
+                            focusedInput={this.state.calendarFocused}
+                            onFocusChange={this.onFocusChange}
+                            showClearDates={true}
+                            numberOfMonths={1}
+                            isOutsideRange={() => false}
+                        />
+                    </div>
+                </div>
 
-                {/* input dealing with date filter */}
-                <select onChange={(e) => {
-                    if (e.target.value === "date") {
-                        this.props.dispatch(sortByDate())
-                    }
-                    else if (e.target.value === "amount") {
-                        this.props.dispatch(sortByAmount())
-                    }
-                }}>
-                {/* user may choose to filter between DATE or AMOUNT */}
-                    <option value="date">Date</option>
-                    <option value="amount">Amount</option>
-                </select>
-                {/* values required to use calendar widget */}
-                <DateRangePicker
-                    startDate={this.props.filters.startDate}
-                    endDate={this.props.filters.endDate}
-                    onDatesChange={this.onDatesChange}
-                    focusedInput={this.state.calendarFocused}
-                    onFocusChange={this.onFocusChange}
-                    showClearDates={true}
-                    numberOfMonths={1}
-                    isOutsideRange={() => false}
-                />
+
+
+
             </div>
         )
     }

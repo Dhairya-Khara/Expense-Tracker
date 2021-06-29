@@ -1,5 +1,5 @@
-.landingPageContainer{
-    background-image: url("../../images/LandingPage-Background.jpg");
+.landingPageContainer {
+    background-image: url("../../images/bg-2.jpg");
     position: fixed;
     background-repeat: no-repeat;
     min-width: 100%;
@@ -7,8 +7,28 @@
     background-position: center center;
     background-attachment: fixed;
     background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.text-about-app{
-    text-align: right;
+.landingPageContainer__box {
+    background: fade-out(white, 0.15);
+    border-radius: 3px;
+    text-align: center;
+    width: 25rem;
+    padding: $l-size $m-size;
+}
+
+#google-sign-in-button {
+    width: 100%;
+}
+
+#google-sign-in-button > div {
+    margin: 0 auto;
+}
+
+.landingPageContainer__title{
+    margin: 0 0 $m-size 0;
+    line-height: 1;
 }

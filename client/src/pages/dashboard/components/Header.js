@@ -54,13 +54,18 @@ class Header extends React.Component {
     render() {
         return (
             <div>
-                <header>
-                    <h1>Expense Tracker</h1>
-                    <Link to="/">
-                        <button className = "logoutButton" onClick={this.logout}>Logout</button>
+                <header className="header">
+                    <div className="content-container" >
+                        <div className="header__content">
+                            <Link to="/dashboard" className="header__title">
+                                <h1>Expense Tracker</h1>
+                            </Link>
+                            <Link to="/">
+                                <button className="logoutButton" onClick={this.logout}>Logout</button>
 
-                    </Link>
-
+                            </Link>
+                        </div>
+                    </div>
                 </header>
             </div>
         )
