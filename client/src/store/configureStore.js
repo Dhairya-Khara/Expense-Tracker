@@ -1,10 +1,10 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore } from 'redux'
 
 import authReducer from '../pages/Landing Page/reducers/auth'
 import expenseReducer from '../pages/dashboard/reducers/expense'
 import filterReducer from '../pages/dashboard/reducers/filters'
 
-import { persistReducer, persistCombineReducers } from 'redux-persist'
+import {  persistCombineReducers } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 
