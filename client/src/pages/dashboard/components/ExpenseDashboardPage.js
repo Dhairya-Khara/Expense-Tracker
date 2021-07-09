@@ -93,7 +93,6 @@ class ExpenseListDashboard extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-
     return {
         auth: state.auth.authenticated,
         email: state.auth.email,

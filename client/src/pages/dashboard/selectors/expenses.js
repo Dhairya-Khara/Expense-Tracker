@@ -1,9 +1,9 @@
-//this method applies filters and expense. Retuns filters expenses
+// //this method applies filters and expense. Retuns filters expenses
 
 import moment from 'moment'
 
 const getVisibleExpenses = (expenses, {text, sortBy, startDate, endDate})=>{
-    return expenses.listOfExpenses.filter((expense)=>{
+    return expenses.filter((expense)=>{
         const createdAtMoment = moment(expense.createdAt)
 
 
