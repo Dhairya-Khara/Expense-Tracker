@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken')
 const User = require('../database/userDatabase')
+const JWT_KEY = process.env.JWT_KEY
 
 const auth = async (req,res,next)=>{
     try{
-        
+
         //getting token stored in the header of the http requests
         const token = req.header('Authorization').replace('Bearer ', '')
    
-        const decoded = jwt.verify(token, 'thisismynewcourse')
+        const decoded = jwt.verify(token, JWT_KEY)
         
         const user = await User.findOne({_id: decoded._id, 'tokens.token':token})
         

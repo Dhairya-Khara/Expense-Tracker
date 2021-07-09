@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 
 const connectionURL = process.env.MONGODB_URL
 const databaseName = "Expense-Tracker-By-Dhairya-Khara"
+const JWT_KEY = process.env.JWT_KEY
+
 
 
 
@@ -71,7 +73,7 @@ Schema.statics.findByCredentials = async (email, password) => {
 Schema.methods.generateAuthToken = async function () {
     const user = this
     
-    const token = jwt.sign({ _id: user.id.toString() }, 'thisismynewcourse')
+    const token = jwt.sign({ _id: user.id.toString() }, JWT_KEY)
 
     user.tokens = user.tokens.concat({ token })
     await user.save()
