@@ -1,5 +1,4 @@
 //FILTER REDUCER
-
 import moment from 'moment'
 
 //default state, no fulters
@@ -30,12 +29,12 @@ const filterReducer = (state = filtersReucerDefaultState, action) => {
         case "SET_START_DATE":
             return{
                 ...state,
-                startDate: action.startDate
+                startDate: moment(action.startDate)
             }
         case "SET_END_DATE":
             return{
                 ...state,
-                endDate: action.endDate
+                endDate: moment(action.endDate)
             }
         case "RESET_STORE":
             return(filtersReucerDefaultState)

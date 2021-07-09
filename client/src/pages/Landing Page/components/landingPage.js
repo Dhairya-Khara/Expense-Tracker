@@ -1,10 +1,8 @@
 import React from 'react'
-import RegisterForm from './register'
-import LoginForm from './login'
-import GoogleButton from 'react-google-button'
 import { connect } from 'react-redux'
 
 import { changeAuth } from "../../../actions/auth"
+import { addExpense } from '../../dashboard/actions/expenses';
 
 
 const GOOGLE_BUTTON_ID = "google-sign-in-button";
@@ -13,6 +11,8 @@ const GOOGLE_BUTTON_ID = "google-sign-in-button";
 class LandingPage extends React.Component {
     constructor(props) {
         super(props)
+
+        
         //if already authenticated, directly redirect to the dashboard
         if (props.auth) {
             props.history.push("/dashboard")
@@ -37,10 +37,39 @@ class LandingPage extends React.Component {
                 console.log("error line 39 landingPage.js")
             }
             const jsonValue = await response.json()
-            const isAuthenticated = jsonValue.auth
+
             const token = jsonValue.token
 
             this.props.dispatch(changeAuth(true, profile.getEmail(), token))
+
+            const url = "http://localhost:8080/getExpenses?email=" + encodeURIComponent(profile.getEmail())
+            let h = new Headers({
+                "Authorization": "Bearer " + token
+            })
+
+            let req = new Request(url, {
+                headers: h
+            })
+
+            //API call to fill in the redux store initially
+            fetch(req).then((response, error) => {
+
+                response.json().then((data, error) => {
+
+                    //filling the expenses in the reducer one by one
+                    for (let i = 0; i < data.length; i++) {
+
+                        this.props.dispatch(addExpense({ description: data[i].description, note: data[i].note, amount: parseInt(data[i].amount), createdAt: parseInt(data[i].createdAt), id: data[i].id }))
+
+                    }
+
+                }).catch((error) => {
+                    console.log(error)
+                })
+            }).catch((error) => {
+                console.log(error)
+            })
+
             this.props.history.push("/dashboard")
         })
     }
@@ -63,8 +92,8 @@ class LandingPage extends React.Component {
         return (
 
             <div className="landingPageContainer">
-                <div className = "landingPageContainer__box">
-                    <h1 className = "landingPageContainer__title">Expense Tracker</h1>
+                <div className="landingPageContainer__box">
+                    <h1 className="landingPageContainer__title">Expense Tracker</h1>
                     <p>By Dhairya Khara</p>
                     {/* rendering google button */}
                     <div id={GOOGLE_BUTTON_ID} />

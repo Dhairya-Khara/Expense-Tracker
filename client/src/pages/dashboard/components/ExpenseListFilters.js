@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { DateRangePicker } from 'react-dates'
 import { setTextFilter, sortByDate, sortByAmount, setStartDate, setEndDate } from '../actions/filters'
+import moment from 'moment'
 
 //component handling all the filters that can be applied to expenses
 class ExpenseListFilters extends React.Component {
@@ -10,6 +11,7 @@ class ExpenseListFilters extends React.Component {
     }
     //method that handles the calendar widget
     onDatesChange = ({ startDate, endDate }) => {
+        console.log(startDate)
         this.props.dispatch(setStartDate(startDate))
         this.props.dispatch(setEndDate(endDate))
     }
@@ -21,22 +23,37 @@ class ExpenseListFilters extends React.Component {
             }
         })
     }
+    //method that returns the value to be passed on to the startDate and endDate props of the DateRangePicker Component
+    determineDate = (date) => {
+        if (date === null) {
+            return null
+        }
+        if (Number.isNaN(date._i)) {
+            return null
+        }
+        if (date._isAMomentObject) {
+            return date
+        }
+
+        return moment(date)
+    }
+
     render() {
         return (
             <div className="content-container">
                 {/* input dealing with text filter */}
-                <div className = "input-group">
-                    <div className = "input-group__item">
-                        <input placeholder = "Search expenses" className = "text-input" type="text" value={this.props.filters.text} onChange={(e) => {
+                <div className="input-group">
+                    <div className="input-group__item">
+                        <input placeholder="Search expenses" className="text-input" type="text" value={this.props.filters.text} onChange={(e) => {
                             this.props.dispatch(setTextFilter(e.target.value))
 
                         }}>
 
                         </input>
                     </div>
-                    <div className = "input-group__item">
+                    <div className="input-group__item">
                         {/* input dealing with date filter */}
-                        <select className = "select" onChange={(e) => {
+                        <select className="select" onChange={(e) => {
                             if (e.target.value === "date") {
                                 this.props.dispatch(sortByDate())
                             }
@@ -49,11 +66,12 @@ class ExpenseListFilters extends React.Component {
                             <option value="amount">Amount</option>
                         </select>
                     </div>
-                    <div className = "input-group__item">
-                        {/* values required to use calendar widget */}
+                    <div className="input-group__item">
+
                         <DateRangePicker
-                            startDate={this.props.filters.startDate}
-                            endDate={this.props.filters.endDate}
+
+                            startDate={this.determineDate(this.props.filters.startDate)}
+                            endDate={this.determineDate(this.props.filters.endDate)}
                             onDatesChange={this.onDatesChange}
                             focusedInput={this.state.calendarFocused}
                             onFocusChange={this.onFocusChange}

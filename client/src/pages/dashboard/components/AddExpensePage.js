@@ -3,6 +3,7 @@ import ExpenseForm from './ExpenseForm'
 import { connect } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import Header from './Header'
+import { addExpense } from '../actions/expenses'
 
 
 class AddExpensePage extends React.Component {
@@ -18,6 +19,7 @@ class AddExpensePage extends React.Component {
     //method that calls the api to add expense to database
     callAPI = ({ description, createdAt, amount, note }) => {
         const id = uuidv4()
+        this.props.dispatch(addExpense({description, createdAt, amount, note, id}))
         let url = "http://localhost:8080/createExpense?description="
             + encodeURIComponent(description) + "&createdAt=" + encodeURIComponent(createdAt) + "&amount="
             + encodeURIComponent(amount) + "&note=" + encodeURIComponent(note) + "&email=" + encodeURIComponent(this.props.email) + "&id="

@@ -5,6 +5,8 @@ import 'react-dates/lib/css/_datepicker.css';
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 
+import {editExpense, removeExpense} from '../actions/expenses'
+
 
 
 
@@ -115,7 +117,7 @@ class ExpenseForm extends React.Component {
 
         //the following code should be executed if user is editting existing expense
         else if (this.props.callAPI) {
-            this.editExpense()
+            this.onEditExpense()
             this.redirectToDashboard(this.props)
         }
 
@@ -126,7 +128,7 @@ class ExpenseForm extends React.Component {
         ///time out is set because database needs to be updated BEFORE going to dashboard. Else, outdated dashboard is rendered even if database is updated
         setTimeout(() => {
             props.history.push("/dashboard")
-        }, 10)
+        }, 50)
     }
 
     //call this method when editting expense
@@ -168,10 +170,25 @@ class ExpenseForm extends React.Component {
 
     //method called on submission of the edit expense form from onSubmit()
     //api call to edit expense in database
-    editExpense = () => {
+    onEditExpense = () => {
 
         const expenseID = this.props.expenseID
         const email = this.props.email
+  
+        const updatedDescription = this.state.description
+        const updatedAmount = this.state.amount*1000
+        const updatedNote = this.state.note
+        const updatedCreatedAt = this.state.createdAt
+
+        const updates = {
+            description: updatedDescription,
+            amount: updatedAmount,
+            note: updatedNote,
+            createdAt: updatedCreatedAt
+        }
+        
+        //editting redux store Expense Reducer
+        this.props.dispatch(editExpense(expenseID, updates))        
 
         let url = "http://localhost:8080/updateExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID) + "&description=" +
             encodeURIComponent(this.state.description) + "&amount=" + encodeURIComponent(this.state.amount) + "&createdAt=" + encodeURIComponent(moment(this.state.createdAt).unix() * 1000) + "&note="
@@ -185,6 +202,7 @@ class ExpenseForm extends React.Component {
             headers: h
         })
 
+        //editting expense in the database
         fetch(req).then(async (response, error) => {
             if (error) {
                 console.log("error")
@@ -201,6 +219,9 @@ class ExpenseForm extends React.Component {
         const expenseID = this.props.expenseID
         const email = this.props.email
 
+        //deleting expense from the redux store Expense Reducer
+        this.props.dispatch(removeExpense(expenseID))
+
         let url = "http://localhost:8080/deleteExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
 
 
@@ -212,6 +233,7 @@ class ExpenseForm extends React.Component {
             headers: h
         })
 
+        //deleting expense from the database
         fetch(req).then(async (response, error) => {
             if (error) {
                 console.log("error")

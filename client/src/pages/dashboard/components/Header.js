@@ -1,25 +1,15 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import {  Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import { changeAuth } from '../../../actions/auth'
 import { resetFilterReducer } from '../actions/filters'
 import { resetExpenseReducer } from '../actions/expenses'
 
-//Header component that is rendered on every page after user logs in
-// const Header = () => {
-//     return (
-//         <header>
-//             <h1>Expense Tracker</h1>
 
-//         </header>
-//     )
-// }
 
 class Header extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+    
 
     //method called when logout button is clicked
     logout = (e) => {
