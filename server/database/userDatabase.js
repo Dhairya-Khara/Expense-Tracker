@@ -2,6 +2,11 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
+const connectionURL = process.env.MONGODB_URL
+const databaseName = "Expense-Tracker-By-Dhairya-Khara"
+
+
+
 //Schema for database
 var Schema = mongoose.Schema
 
@@ -87,8 +92,15 @@ Schema.pre('save', async function (next) {
 let User = mongoose.model('User', Schema)
 
 
+//LOCAL HOST CONNECTION
+// mongoose.connect('mongodb://127.0.0.1:27017/user', {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true
+// })
 
-mongoose.connect('mongodb://127.0.0.1:27017/user', {
+//hosted database connection
+mongoose.connect(connectionURL+"/"+databaseName, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true

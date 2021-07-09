@@ -37,8 +37,6 @@ app.post('/createUser', async (req, res) => {
 //api endpoint to log user in 
 app.post('/loginUser', async (req, res) => {
     try {
-
-        //const user = await User.findByCredentials(req.query.email, req.query.password)
      
         const userInfo = {
             email: req.query.email,
@@ -94,6 +92,7 @@ app.post('/createExpense', auth, async (req, res) => {
 
 //api endpoint to get all the expenses of the user to render on dashboard, auth required
 app.get('/getExpenses', auth, async (req, res) => {
+
     const user = req.user
     res.send(user.expenses)
 })
