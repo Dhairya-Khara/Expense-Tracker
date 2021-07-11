@@ -27,14 +27,14 @@ class LandingPage extends React.Component {
         var profile = googleUser.getBasicProfile();
 
 
-        let url = "http://localhost:8080/loginUser?email=" + encodeURIComponent(profile.getEmail()) + "&name=" + encodeURIComponent(profile.getName())
+        let url = "https://khara-expense-tracker-server.herokuapp.com/loginUser?email=" + encodeURIComponent(profile.getEmail()) + "&name=" + encodeURIComponent(profile.getName())
         let req = new Request(url, {
             method: "POST"
         })
 
         fetch(req).then(async (response, error) => {
             if (error) {
-                console.log("error line 39 landingPage.js")
+
             }
             const jsonValue = await response.json()
 
@@ -42,7 +42,7 @@ class LandingPage extends React.Component {
 
             this.props.dispatch(changeAuth(true, profile.getEmail(), token))
 
-            const url = "http://localhost:8080/getExpenses?email=" + encodeURIComponent(profile.getEmail())
+            const url = "https://khara-expense-tracker-server.herokuapp.com/getExpenses?email=" + encodeURIComponent(profile.getEmail())
             let h = new Headers({
                 "Authorization": "Bearer " + token
             })

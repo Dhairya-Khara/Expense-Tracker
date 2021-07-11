@@ -138,7 +138,7 @@ class ExpenseForm extends React.Component {
         const expenseID = this.props.expenseID
         const email = this.props.email
 
-        let url = "http://localhost:8080/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
+        let url = "https://khara-expense-tracker-server.herokuapp.com/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
 
         let h = new Headers({
             "Authorization": this.props.token
@@ -190,7 +190,7 @@ class ExpenseForm extends React.Component {
         //editting redux store Expense Reducer
         this.props.dispatch(editExpense(expenseID, updates))        
 
-        let url = "http://localhost:8080/updateExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID) + "&description=" +
+        let url = "https://khara-expense-tracker-server.herokuapp.com/updateExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID) + "&description=" +
             encodeURIComponent(this.state.description) + "&amount=" + encodeURIComponent(this.state.amount) + "&createdAt=" + encodeURIComponent(moment(this.state.createdAt).unix() * 1000) + "&note="
             + encodeURIComponent(this.state.note)
 
@@ -222,7 +222,7 @@ class ExpenseForm extends React.Component {
         //deleting expense from the redux store Expense Reducer
         this.props.dispatch(removeExpense(expenseID))
 
-        let url = "http://localhost:8080/deleteExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
+        let url = "https://khara-expense-tracker-server.herokuapp.com/deleteExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
 
 
         let h = new Headers({

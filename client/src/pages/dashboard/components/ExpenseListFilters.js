@@ -11,7 +11,7 @@ class ExpenseListFilters extends React.Component {
     }
     //method that handles the calendar widget
     onDatesChange = ({ startDate, endDate }) => {
-        console.log(startDate)
+
         this.props.dispatch(setStartDate(startDate))
         this.props.dispatch(setEndDate(endDate))
     }
