@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 var cors = require('cors')
 
 const User = require('../database/userDatabase');
@@ -9,6 +10,17 @@ const port = process.env.PORT || 8080
 
 //required because client hosted on post 3000 and server hosted on port 8080
 app.use(cors())
+
+
+//trying to use build
+const clientDirectory = path.join(__dirname, '../build')
+
+app.use(express.static(clientDirectory))
+
+app.get('/*', (req, res) => {
+    //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(clientDirectory, '/index.html'))
+});
 
 
 //api endpoint for registering user
@@ -29,7 +41,7 @@ app.post('/createUser', async (req, res) => {
     user.save().then(async (response) => {
         res.send({ user })
     }).catch((e) => {
-       res.send(false)
+        res.send(false)
     })
 
 })
@@ -37,13 +49,13 @@ app.post('/createUser', async (req, res) => {
 //api endpoint to log user in 
 app.post('/loginUser', async (req, res) => {
     try {
-     
+
         const userInfo = {
             email: req.query.email,
             name: req.query.name
         }
 
-     
+
 
         const user = await User.logUserInUsingGoogle(userInfo)
         const token = await user.generateAuthToken()
@@ -84,7 +96,7 @@ app.post('/createExpense', auth, async (req, res) => {
             }
         })
 
-    
+
     } catch (e) {
         console.log(e)
     }
@@ -150,7 +162,7 @@ app.patch('/updateExpense', auth, async (req, res) => {
         {
             $set: {
                 "expenses.$.description": req.query.description,
-                "expenses.$.amount": parseInt(req.query.amount)*1000,
+                "expenses.$.amount": parseInt(req.query.amount) * 1000,
                 "expenses.$.createdAt": parseInt(req.query.createdAt),
                 "expenses.$.note": req.query.note
             }
@@ -158,15 +170,15 @@ app.patch('/updateExpense', auth, async (req, res) => {
 })
 
 //api endpoint to delete the chosen expense, auth rquired
-app.post('/deleteExpense', auth, async(req,res)=>{
- 
+app.post('/deleteExpense', auth, async (req, res) => {
+
     const expenseId = req.query.id
     const user = req.user
 
     user.expenses.forEach((eachItem) => {
-        
+
         if (eachItem.id === expenseId) {
-          
+
             User.updateOne({
                 email: req.query.email
             }, {
