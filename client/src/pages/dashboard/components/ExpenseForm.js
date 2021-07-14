@@ -138,7 +138,7 @@ class ExpenseForm extends React.Component {
         const expenseID = this.props.expenseID
         const email = this.props.email
 
-        let url = "https://khara-expense-tracker-server.herokuapp.com/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
+        let url = "/singleExpense?email=" + encodeURIComponent(email) + "&id=" + encodeURIComponent(expenseID)
 
         let h = new Headers({
             "Authorization": this.props.token
