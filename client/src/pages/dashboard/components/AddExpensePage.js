@@ -20,7 +20,7 @@ class AddExpensePage extends React.Component {
     callAPI = ({ description, createdAt, amount, note }) => {
         const id = uuidv4()
         this.props.dispatch(addExpense({description, createdAt, amount, note, id}))
-        let url = "https://khara-expense-tracker-server.herokuapp.com/createExpense?description="
+        let url = "/createExpense?description="
             + encodeURIComponent(description) + "&createdAt=" + encodeURIComponent(createdAt) + "&amount="
             + encodeURIComponent(amount) + "&note=" + encodeURIComponent(note) + "&email=" + encodeURIComponent(this.props.email) + "&id="
             + encodeURIComponent(id)

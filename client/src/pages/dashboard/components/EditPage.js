@@ -27,7 +27,7 @@ class EditPage extends React.Component {
         //id of expense to edit
         const expenseID = this.props.match.url.substring(19, this.props.match.url.length);
 
-        let url = "https://khara-expense-tracker-server.herokuapp.com/singleExpense?email=" + encodeURIComponent(this.props.email) + "&id=" + encodeURIComponent(expenseID)
+        let url = "/singleExpense?email=" + encodeURIComponent(this.props.email) + "&id=" + encodeURIComponent(expenseID)
 
         let h = new Headers({
             "Authorization": this.props.token

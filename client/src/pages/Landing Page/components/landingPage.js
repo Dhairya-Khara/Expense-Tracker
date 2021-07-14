@@ -27,7 +27,7 @@ class LandingPage extends React.Component {
         var profile = googleUser.getBasicProfile();
 
 
-        let url = "https://khara-expense-tracker-server.herokuapp.com/loginUser?email=" + encodeURIComponent(profile.getEmail()) + "&name=" + encodeURIComponent(profile.getName())
+        let url = "/loginUser?email=" + encodeURIComponent(profile.getEmail()) + "&name=" + encodeURIComponent(profile.getName())
         let req = new Request(url, {
             method: "POST"
         })
@@ -42,18 +42,18 @@ class LandingPage extends React.Component {
 
             this.props.dispatch(changeAuth(true, profile.getEmail(), token))
 
-            const url = "https://khara-expense-tracker-server.herokuapp.com/getExpenses?email=" + encodeURIComponent(profile.getEmail())
+            const url = "/getExpenses?email=" + encodeURIComponent(profile.getEmail())
             let h = new Headers({
                 "Authorization": "Bearer " + token
             })
 
             let req = new Request(url, {
-                headers: h
+                headers: h,
+                method: "GET"
             })
 
             //API call to fill in the redux store initially
             fetch(req).then((response, error) => {
-
                 response.json().then((data, error) => {
 
                     //filling the expenses in the reducer one by one

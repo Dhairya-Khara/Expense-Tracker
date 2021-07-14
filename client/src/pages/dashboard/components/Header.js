@@ -15,7 +15,7 @@ class Header extends React.Component {
     logout = (e) => {
 
 
-        const url = "https://khara-expense-tracker-server.herokuapp.com/logout?email=" + encodeURIComponent(this.props.email) + "&token=" + encodeURIComponent(this.props.token)
+        const url = "/logout?email=" + encodeURIComponent(this.props.email) + "&token=" + encodeURIComponent(this.props.token)
         let h = new Headers({
             "Authorization":  "Bearer " +this.props.token
         })
