@@ -12,7 +12,7 @@ class LandingPage extends React.Component {
     constructor(props) {
         super(props)
 
-        
+
         //if already authenticated, directly redirect to the dashboard
         if (props.auth) {
             props.history.push("/dashboard")
@@ -85,6 +85,9 @@ class LandingPage extends React.Component {
             'theme': 'dark',
             'onsuccess': this.onSignIn
         });
+
+
+
     }
 
     render() {
