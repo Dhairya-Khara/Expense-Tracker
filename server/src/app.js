@@ -6,7 +6,7 @@ const User = require('../database/userDatabase');
 const auth = require('../middleware/auth');
 
 const app = express()
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 3000
 
 //required because client hosted on post 3000 and server hosted on port 8080
 app.use(cors())
@@ -17,7 +17,7 @@ const clientDirectory = path.join(__dirname, '../build')
 
 app.use(express.static(clientDirectory))
 
-app.get('/*', (req, res) => {
+app.get('/', (req, res) => {
     //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
     res.sendFile(path.join(clientDirectory, '/index.html'))
 });
@@ -106,7 +106,8 @@ app.post('/createExpense', auth, async (req, res) => {
 app.get('/getExpenses', auth, async (req, res) => {
 
     const user = req.user
-    res.send(user.expenses)
+
+    res.json(user.expenses)
 })
 
 //api endpoint to log user out, auth required
