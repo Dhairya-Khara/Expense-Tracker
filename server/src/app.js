@@ -22,6 +22,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(clientDirectory, '/index.html'))
 });
 
+app.get('/dashboard*', (req, res) => {
+    //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(path.join(clientDirectory, '/index.html'))
+});
+
 
 //api endpoint for registering user
 app.post('/createUser', async (req, res) => {
