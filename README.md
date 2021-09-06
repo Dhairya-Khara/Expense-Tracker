@@ -9,7 +9,7 @@ At the rudimentary level, this web app helps users keep track of their expenses.
 - Authorization - [JWT](https://jwt.io/)
 - Authentication - [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2)
 - Database Querying and Hosting - [MonogDB](https://www.mongodb.com/) ([w/ Mongoose](https://mongoosejs.com/)) 
-- Styling - [SASS](https://sass-lang.com/)
+- Styling - [SCSS](https://sass-lang.com/)
 - Custom API - [NodeJS](https://nodejs.org/en/)
 - Cloud Deployment - [Heroku](https://www.heroku.com/)
 
